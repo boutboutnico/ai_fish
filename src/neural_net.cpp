@@ -120,7 +120,7 @@ vector<float> NeuralNet::GetWeights() const
 //  with the new values
 //
 //------------------------------------------------------------------------
-void NeuralNet::PutWeights(vector<float>& weights)
+void NeuralNet::PutWeights(const vector<float>& weights)
 {
 	int cWeight = 0;
 

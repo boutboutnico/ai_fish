@@ -30,12 +30,17 @@ public:
 	/// === PUBLIC DECLARATIONS	====================================================================
 	Fish(sdl::Renderer& renderer);
 
+	void reset();
 	void update(std::vector<Food*>& foods);
+
 	inline SVector2D getPosition() const;
 	inline uint16_t getRadius() const;
 	inline uint16_t getFitness() const;
 	inline void incrementFood();
 	inline uint16_t getClosestFood() const;
+
+	inline uint16_t getNWeights() const;
+	inline void putWeights(const std::vector<float>& weights);
 
 	/// Graphics
 	void display(sdl::Renderer& renderer);
@@ -49,8 +54,8 @@ private:
 	SVector2D ComputeClosestFood(std::vector<Food*>& foods);
 
 	/// === PRIVATE ATTRIBUTS	====================================================================
-	sdl::Texture* ptexture_;
-	SDL_Rect rect_;
+//	sdl::Texture* ptexture_;
+//	SDL_Rect rect_;
 
 	static std::vector<SPoint> vertices_;
 	sdl::RGBA rgba_;
@@ -59,8 +64,8 @@ private:
 	SVector2D direction_;
 	float rotation_;
 
-	float x_, y_;
-	float theta_;
+//	float x_, y_;
+//	float theta_;
 
 	uint16_t food_cpt_;
 	uint16_t index_closest_food_;
@@ -100,6 +105,18 @@ inline void Fish::incrementFood()
 inline uint16_t Fish::getClosestFood() const
 {
 	return index_closest_food_;
+}
+
+/// ------------------------------------------------------------------------------------------------
+inline uint16_t Fish::getNWeights() const
+{
+	return neural_net_.GetNumberOfWeights();
+}
+
+/// ------------------------------------------------------------------------------------------------
+inline void Fish::putWeights(const std::vector<float>& weights)
+{
+	neural_net_.PutWeights(weights);
 }
 
 /// ------------------------------------------------------------------------------------------------

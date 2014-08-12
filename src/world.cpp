@@ -13,7 +13,8 @@
 using namespace sdl;
 
 /// === PUBLIC DEFINITIONS	========================================================================
-World::World(Renderer& renderer)
+World::World(Renderer& renderer) :
+		tick_cnt(0)
 {
 	for (uint16_t i = 0; i < Param::n_fish; i++)
 	{
@@ -26,75 +27,93 @@ World::World(Renderer& renderer)
 		foods_.push_back(new Food());
 	}
 
+	gen_algo_ = new CGenAlg(Param::n_fish, Param::mutation_rate, Param::crossover_rate,
+			fishes_.at(0)->getNWeights());
+
+	/// Get weights from GA and put it in fishes' brain
+	for (uint16_t i = 0; i < fishes_.size(); i++)
+	{
+		fishes_[i]->putWeights(gen_algo_->getPopulation()[i].genes_);
+	}
 }
 
 /// ------------------------------------------------------------------------------------------------
 void World::update()
 {
-	Food* pfood;
+//	cout << tick_cnt << endl;
 
-	for (auto fi : fishes_)
+	if (tick_cnt++ <= Param::n_ticks)
 	{
-		fi->update(foods_);
-
-		pfood = foods_.at(fi->getClosestFood());
-
-		if (Vec2DLength(fi->getPosition() - pfood->getPosition())
-				< (pfood->getRadius() + fi->getRadius()))
+		Food* pfood;
+		for (auto fi : fishes_)
 		{
-			foods_.erase(foods_.begin() + fi->getClosestFood());
-			foods_.push_back(new Food());
+			fi->update(foods_);
 
-			fi->incrementFood();
-		}
+			pfood = foods_.at(fi->getClosestFood());
 
-	}
-
-//	for (uint16_t i = 0; i < foods_.size(); i++)
-//	{
-//		if (foods_.at(i)->isEaten() == true)
-//		{
-//			foods_.erase(foods_.begin() + i);
-//
-//			foods_.push_back(new Food());
-//		}
-//	}
-
-//	Food* pfood;
-//	for (auto fi : fishes_)
-//	{
-//		for (uint16_t fo = 0; fo < foods_.size(); fo++)
-//		{
-//			pfood = foods_.at(fo);
-//
-//			if (Vec2DLength(fi->getPosition() - pfood->getPosition())
-//					< (pfood->getRadius() + fi->getRadius()))
-//			{
-//				foods_.erase(foods_.begin() + fo);
+			if (Vec2DLength(fi->getPosition() - pfood->getPosition())
+					< (pfood->getRadius() + fi->getRadius()))
+			{
+				foods_.erase(foods_.begin() + fi->getClosestFood());
 //				foods_.push_back(new Food());
-//
-//				fi->incrementFood();
-//			}
-//		}
-//	}
 
-/// Highlight best fish
-	RGBA rgba =
-	{ 0, 0, 0, 255 };
+				fi->incrementFood();
+			}
 
-	fish_best_->setRGBA(rgba);
-
-	for (uint16_t i = 0; i < fishes_.size(); i++)
-	{
-		if (fishes_.at(i)->getFitness() > fish_best_->getFitness())
-		{
-			fish_best_ = fishes_.at(i);
 		}
-	}
 
-	rgba =
-	{	255,0,0,255};
-	fish_best_->setRGBA(rgba);
+		/// Highlight best fish
+		RGBA rgba =
+		{ 0, 0, 0, 255 };
+
+		fish_best_->setRGBA(rgba);
+
+		for (uint16_t i = 0; i < fishes_.size(); i++)
+		{
+			if (fishes_.at(i)->getFitness() > fish_best_->getFitness())
+			{
+				fish_best_ = fishes_.at(i);
+			}
+		}
+
+		rgba =
+		{	255,0,0,255};
+		fish_best_->setRGBA(rgba);
+	}
+	else
+	{
+		/// Resupply food
+		for (uint16_t i = foods_.size(); i < Param::n_food; i++)
+		{
+			foods_.push_back(new Food());
+		}
+
+		cout << "Next Generation: " << gen_algo_->getGenerationCount() << endl;
+
+		tick_cnt = 0;
+
+		/// Update chromosomes fitness
+		vector<SGenome> pop = gen_algo_->getPopulation();
+		for (uint16_t i = 0; i < fishes_.size(); i++)
+		{
+			pop[i].fitness_ = fishes_.at(i)->getFitness();
+		}
+
+		/// Run Genetic Algorithm
+		pop = gen_algo_->Epoch(pop);
+
+		/// Update Fishes' brain with new values
+		for (uint16_t i = 0; i < fishes_.size(); i++)
+		{
+			fishes_[i]->putWeights(pop[i].genes_);
+
+			fishes_[i]->reset();
+		}
+
+		cout << "Average Fitness: " << gen_algo_->getAverageFitness() << endl;
+		cout << "Best Fitness:    " << gen_algo_->getBestFitness() << endl << endl;
+
+	}
 }
 
 /// ------------------------------------------------------------------------------------------------

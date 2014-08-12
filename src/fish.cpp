@@ -25,12 +25,17 @@ vector<SPoint> Fish::vertices_ =
 		SPoint(-0.25, 0), SPoint(-1, 0) };
 
 /// === PUBLIC DEFINITIONS	========================================================================
-Fish::Fish(Renderer& renderer) :
-		food_cpt_(0)
+Fish::Fish(Renderer& renderer)
 {
 	rgba_ =
 	{	0, 0, 0, 255};
 
+	reset();
+}
+
+/// ------------------------------------------------------------------------------------------------
+void Fish::reset()
+{
 	rotation_ = RandFloat() * Param::TwoPi;
 
 	direction_.x = -sin(rotation_);
@@ -38,25 +43,12 @@ Fish::Fish(Renderer& renderer) :
 
 	position_ = SVector2D(RandFloat() * Param::window_width, RandFloat() * Param::window_height);
 
-//	Surface surface("res/fish.bmp");
-//	ptexture_ = new Texture(renderer, surface);
-
-//	rect_.w = 40;
-//	rect_.h = 20;
-//
-//	rect_.x = RandInt(0, Param::window_width);
-//	rect_.y = RandInt(0, Param::window_height);
-//
-//	x_ = rect_.x;
-//	y_ = rect_.y;
-//	theta_ = RandFloat() * Param::dTwoPi;
+	food_cpt_ = 0;
 }
 
 /// ------------------------------------------------------------------------------------------------
 void Fish::update(vector<Food*>& foods)
 {
-	SVector2D vec;
-
 	//this will store all the inputs for the NN
 	vector<float> inputs;
 
@@ -64,10 +56,12 @@ void Fish::update(vector<Food*>& foods)
 	vec_closest_food_ = ComputeClosestFood(foods);
 
 	/// ??? Normaliser vecteur ???
+	SVector2D vec = vec_closest_food_;
+	Vec2DNormalize(vec);
 
 	//add in vector to closest mine
-	inputs.push_back(vec_closest_food_.x);
-	inputs.push_back(vec_closest_food_.y);
+	inputs.push_back(vec.x);
+	inputs.push_back(vec.y);
 
 	//add in sweepers
 	inputs.push_back(direction_.x);
@@ -124,7 +118,7 @@ void Fish::display(sdl::Renderer& renderer)
 //	circleRGBA(renderer.get(), position_.x, position_.y, getRadius(), rgba_.r_, rgba_.g_, rgba_.b_,
 //			rgba_.alpha_);
 
-	/// Draw Line to food
+/// Draw Line to food
 	renderer.drawLine(position_.x, position_.y, vec_closest_food_.x, vec_closest_food_.y);
 
 	//	SDL_Rect rect = {};

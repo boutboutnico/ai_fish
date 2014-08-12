@@ -76,7 +76,7 @@ public:
 	int GetNumberOfWeights() const;
 
 	//replaces the weights with new ones
-	void PutWeights(std::vector<float>& weights);
+	void PutWeights(const std::vector<float>& weights);
 
 	//calculates the outputs from a set of inputs
 	vector<float> Update(std::vector<float>& inputs);

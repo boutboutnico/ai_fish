@@ -35,10 +35,6 @@ int main(int argc, char** argv)
 	{
 		SDL sdl(EInit::VIDEO | EInit::TIMER);
 
-		uint32_t start_time = SDL_GetTicks();
-		float fps = 0;
-		uint32_t frame_count = 0;
-
 		/// Création de la fenêtre
 		Window window(title, Window::CENTERED, Window::CENTERED, Param::window_width,
 				Param::window_height, Window::SHOWN);
@@ -48,7 +44,10 @@ int main(int argc, char** argv)
 		/// Init Framerate manager
 		FPSmanager manager;
 		SDL_initFramerate(&manager);
-		SDL_setFramerate(&manager, 60);
+		SDL_setFramerate(&manager, Param::framerate);
+
+		uint32_t start_time = SDL_GetTicks();
+		uint32_t frame_count = 0;
 
 		Engine engine(renderer);
 
@@ -83,10 +82,21 @@ int main(int argc, char** argv)
 
 			renderer.present();
 
+			/// Update and Display current FrameRate
 			SDL_framerateDelay(&manager);
-			fps = (frame_count++ / (float) (SDL_GetTicks() - start_time)) * 1000;
-			window.setTitle(
-					title + string(" FPS: ") + to_str<uint32_t>(static_cast<uint32_t>(fps)));
+
+			frame_count++;
+
+			if (SDL_GetTicks() - start_time >= 1000)
+			{
+				float fps = (frame_count / (float) (SDL_GetTicks() - start_time)) * 1000;
+
+				window.setTitle(
+						title + string(" FPS: ") + to_str<uint32_t>(static_cast<uint32_t>(fps)));
+
+				frame_count = 0;
+				start_time = SDL_GetTicks();
+			}
 		}
 
 		cout << "SDL2: Quit" << endl;
