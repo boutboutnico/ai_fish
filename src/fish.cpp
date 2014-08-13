@@ -57,9 +57,9 @@ void Fish::update(vector<Food*>& foods)
 
 	/// ??? Normaliser vecteur ???
 	SVector2D vec = vec_closest_food_;
-	Vec2DNormalize(vec);
+//	Vec2DNormalize(vec);
 
-	//add in vector to closest mine
+//add in vector to closest mine
 	inputs.push_back(vec.x);
 	inputs.push_back(vec.y);
 
@@ -148,7 +148,7 @@ void Fish::transform(vector<SPoint>& vertices)
 }
 
 /// ------------------------------------------------------------------------------------------------
-SVector2D Fish::ComputeClosestFood(vector<Food*>& foods)
+SVector2D Fish::ComputeClosestFood(const vector<Food*>& foods)
 {
 	float closest = sqrt(pow(Param::window_width, 2) + pow(Param::window_height, 2));
 

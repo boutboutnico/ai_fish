@@ -13,7 +13,7 @@
 
 #include "param.h"
 #include "food.h"
-#include "neural_net.h"
+#include "neural_net/neural_net.h"
 #include "C2DMatrix.h"
 #include "SVector2D.h"
 
@@ -36,7 +36,7 @@ public:
 	inline SVector2D getPosition() const;
 	inline uint16_t getRadius() const;
 	inline uint16_t getFitness() const;
-	inline void incrementFood();
+	inline void incrementFood(uint16_t val);
 	inline uint16_t getClosestFood() const;
 
 	inline uint16_t getNWeights() const;
@@ -51,7 +51,7 @@ private:
 
 	void transform(vector<SPoint>& vertices);
 
-	SVector2D ComputeClosestFood(std::vector<Food*>& foods);
+	SVector2D ComputeClosestFood(const std::vector<Food*>& foods);
 
 	/// === PRIVATE ATTRIBUTS	====================================================================
 //	sdl::Texture* ptexture_;
@@ -71,7 +71,7 @@ private:
 	uint16_t index_closest_food_;
 	SVector2D vec_closest_food_;
 
-	NeuralNet neural_net_;
+	Neural_Net neural_net_;
 };
 
 /// === INLINE DEFINITIONS	========================================================================
@@ -96,9 +96,9 @@ inline uint16_t Fish::getFitness() const
 }
 
 /// ------------------------------------------------------------------------------------------------
-inline void Fish::incrementFood()
+inline void Fish::incrementFood(uint16_t val)
 {
-	food_cpt_++;
+	food_cpt_ += val;
 }
 
 /// ------------------------------------------------------------------------------------------------

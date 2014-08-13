@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 	static const string title = "AI Fish";
 	bool b_done = false;
 	SDL_Event event;
+	bool b_fast_mode = false;
 
 	std::srand(std::time(0));
 
@@ -62,7 +63,7 @@ int main(int argc, char** argv)
 					b_done = true;
 					break;
 				case SDL_KEYUP:
-					//if (event.key.keysym.sym == SDLK_q) moteur.fin();
+					if (event.key.keysym.sym == SDLK_f) b_fast_mode = !b_fast_mode;
 					//else if (event.key.keysym.sym == SDLK_ESCAPE) moteur.echangeFonctions();
 					break;
 				case SDL_MOUSEBUTTONUP:
@@ -73,29 +74,38 @@ int main(int argc, char** argv)
 				}
 			}
 
-			/// Set background: White
-			renderer.setDrawColor(255, 255, 255, 255);
-			renderer.clear();
-
 			engine.update();
-			engine.display(renderer);
 
-			renderer.present();
-
-			/// Update and Display current FrameRate
-			SDL_framerateDelay(&manager);
-
-			frame_count++;
-
-			if (SDL_GetTicks() - start_time >= 1000)
+			if (b_fast_mode == false)
 			{
-				float fps = (frame_count / (float) (SDL_GetTicks() - start_time)) * 1000;
+				/// Set background: White
+				renderer.setDrawColor(255, 255, 255, 255);
+				renderer.clear();
 
-				window.setTitle(
-						title + string(" FPS: ") + to_str<uint32_t>(static_cast<uint32_t>(fps)));
+				engine.display(renderer);
 
-				frame_count = 0;
-				start_time = SDL_GetTicks();
+				renderer.present();
+
+				/// Update and Display current FrameRate
+				SDL_framerateDelay(&manager);
+
+				frame_count++;
+
+				if (SDL_GetTicks() - start_time >= 1000)
+				{
+					float fps = (frame_count / (float) (SDL_GetTicks() - start_time)) * 1000;
+
+					window.setTitle(
+							title + string(" FPS: ")
+									+ to_str<uint32_t>(static_cast<uint32_t>(fps)));
+
+					frame_count = 0;
+					start_time = SDL_GetTicks();
+				}
+			}
+			else
+			{
+				window.setTitle(title + string(" Fast Mode "));
 			}
 		}
 
@@ -105,6 +115,10 @@ int main(int argc, char** argv)
 	} catch (const SDL_Exception& err)
 	{
 		cerr << "Error SDL: " << err.what() << endl;
+	}
+	catch(...)
+	{
+		cerr << "Unhandle exception" << endl;
 	}
 
 	return 1;

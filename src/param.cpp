@@ -26,13 +26,13 @@ uint16_t Param::n_food = 200;
 uint16_t Param::n_inputs = 4;
 uint16_t Param::n_outputs = 2;
 uint16_t Param::n_hidden_layers = 2;
-uint16_t Param::n_neurons_per_hidden_layer = 6;
+uint16_t Param::n_neurons_per_hidden_layer = 4;
 float Param::activation_response = 1;
 float Param::bias = -1;
 
 float Param::turn_rate_max = 0.3;
 
-uint32_t Param::n_ticks = 2000;
+uint32_t Param::n_ticks = 3000;
 float Param::mutation_rate = 0.1;
 float Param::crossover_rate = 0.7;
 float Param::perturbation_max = 0.3;

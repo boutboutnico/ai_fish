@@ -40,8 +40,6 @@ World::World(Renderer& renderer) :
 /// ------------------------------------------------------------------------------------------------
 void World::update()
 {
-//	cout << tick_cnt << endl;
-
 	if (tick_cnt++ <= Param::n_ticks)
 	{
 		Food* pfood;
@@ -54,10 +52,12 @@ void World::update()
 			if (Vec2DLength(fi->getPosition() - pfood->getPosition())
 					< (pfood->getRadius() + fi->getRadius()))
 			{
+				fi->incrementFood(Param::n_food - foods_.size());
+
 				foods_.erase(foods_.begin() + fi->getClosestFood());
 //				foods_.push_back(new Food());
 
-				fi->incrementFood();
+				if (foods_.empty()) cerr << "No more foods" << endl;
 			}
 
 		}
