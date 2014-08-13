@@ -23,6 +23,10 @@ uint16_t Param::scale = 10;
 uint16_t Param::n_fish = 30;
 uint16_t Param::n_food = 200;
 
+uint16_t Param::n_inputs = 4;
+uint16_t Param::n_outputs = 2;
+uint16_t Param::n_hidden_layers = 2;
+uint16_t Param::n_neurons_per_hidden_layer = 6;
 float Param::activation_response = 1;
 float Param::bias = -1;
 

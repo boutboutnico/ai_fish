@@ -33,6 +33,10 @@ public:
 	static uint16_t n_food;
 
 	/// Neural Net
+	static uint16_t n_inputs;
+	static uint16_t n_outputs;
+	static uint16_t n_hidden_layers;
+	static uint16_t n_neurons_per_hidden_layer;
 	static float activation_response;
 	static float bias;
 

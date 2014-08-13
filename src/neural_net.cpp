@@ -48,10 +48,10 @@ NeuronLayer::NeuronLayer(uint16_t n_neurons, uint16_t n_inputs_per_neuron) :
 //-----------------------------------------------------------------------
 NeuralNet::NeuralNet()
 {
-	n_inputs_ = 4;
-	n_outputs_ = 2;
-	n_hidden_layers_ = 1;
-	n_neurons_per_hidden_layer = 6;
+	n_inputs_ = Param::n_inputs;
+	n_outputs_ = Param::n_outputs;
+	n_hidden_layers_ = Param::n_hidden_layers;
+	n_neurons_per_hidden_layer = Param::n_neurons_per_hidden_layer;
 
 	CreateNet();
 }
