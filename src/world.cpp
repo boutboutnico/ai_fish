@@ -57,7 +57,11 @@ void World::update()
 				foods_.erase(foods_.begin() + fi->getClosestFood());
 //				foods_.push_back(new Food());
 
-				if (foods_.empty()) cerr << "No more foods" << endl;
+				if (foods_.empty())
+				{
+					cerr << "No more foods" << endl;
+					foods_.push_back(new Food());
+				}
 			}
 
 		}

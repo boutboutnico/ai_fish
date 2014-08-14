@@ -1,5 +1,5 @@
 ///
-/// \file	neuron.h
+/// \file	neuron_net.h
 ///	\brief
 ///	\date	13 août 2014
 /// \author	Nico_user
@@ -26,20 +26,19 @@ class Neural_Net
 
 public:
 	/// === PUBLIC DECLARATIONS	====================================================================
+
 	Neural_Net();
 
-//	void CreateNet();
-
-//gets the weights from the NN
+	/// gets the weights from the NN
 	std::vector<float> getWeights() const;
 
-	//returns total number of weights in net
+	/// returns total number of weights in net
 	uint16_t GetNumberOfWeights() const;
 
-	//replaces the weights with new ones
+	/// replaces the weights with new ones
 	void PutWeights(const std::vector<float>& weights);
 
-	//calculates the outputs from a set of inputs
+	/// calculates the outputs from a set of inputs
 	std::vector<float> Update(const std::vector<float>& inputs);
 
 private:
@@ -62,3 +61,4 @@ private:
 };
 
 #endif
+/// === END OF FILES	============================================================================

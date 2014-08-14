@@ -1,5 +1,5 @@
 ///
-/// \file
+/// \file	neural_net.cpp
 ///	\brief
 ///	\date	11 août 2014
 /// \author	Nico_user
@@ -44,11 +44,7 @@ Neural_Net::Neural_Net()
 	}
 }
 
-//---------------------------------GetWeights-----------------------------
-//
-//	returns a vector containing the weights
-//
-//------------------------------------------------------------------------
+/// ------------------------------------------------------------------------------------------------
 vector<float> Neural_Net::getWeights() const
 {
 	vector<float> weights;
@@ -70,12 +66,7 @@ vector<float> Neural_Net::getWeights() const
 	return weights;
 }
 
-//-----------------------------------PutWeights---------------------------
-//
-//	given a vector of doubles this function replaces the weights in the NN
-//  with the new values
-//
-//------------------------------------------------------------------------
+/// ------------------------------------------------------------------------------------------------
 void Neural_Net::PutWeights(const vector<float>& weights)
 {
 	uint16_t weight_cnt = 0;
@@ -95,11 +86,7 @@ void Neural_Net::PutWeights(const vector<float>& weights)
 	}
 }
 
-//---------------------------------GetNumberOfWeights---------------------
-//
-//	returns the total number of weights needed for the net
-//
-//------------------------------------------------------------------------
+/// ------------------------------------------------------------------------------------------------
 uint16_t Neural_Net::GetNumberOfWeights() const
 {
 	uint16_t weights = 0;
@@ -117,11 +104,7 @@ uint16_t Neural_Net::GetNumberOfWeights() const
 	return weights;
 }
 
-//-------------------------------Update-----------------------------------
-//
-//	given an input vector this function calculates the output vector
-//
-//------------------------------------------------------------------------
+/// ------------------------------------------------------------------------------------------------
 vector<float> Neural_Net::Update(const vector<float>& _inputs)
 {
 	//stores the resultant outputs from each layer
@@ -151,25 +134,6 @@ vector<float> Neural_Net::Update(const vector<float>& _inputs)
 		for (auto neuron : layers_[i].neurons_)
 		{
 			outputs.push_back(neuron.getOutput(inputs));
-
-//			double netinput = 0;
-//
-//			int NumInputs = layers_[i].neurons_[j].weights_.size();
-//
-//			//for each weight
-//			for (int k = 0; k < NumInputs - 1; ++k)
-//			{
-//				//sum the weights x inputs
-//				netinput += layers_[i].neurons_[j].weights_[k] * inputs[cWeight++];
-//			}
-//
-//			//add in the bias
-//			netinput += layers_[i].neurons_[j].weights_[NumInputs - 1] * Param::bias;
-//
-//			//we can store the outputs from each layer as we generate them.
-//			//The combined activation is first filtered through the sigmoid
-//			//function
-//			outputs.push_back(Sigmoid(netinput, Param::activation_response));
 		}
 	}
 
