@@ -27,13 +27,13 @@ World::World(Renderer& renderer) :
 		foods_.push_back(new Food());
 	}
 
-	gen_algo_ = new CGenAlg(Param::n_fish, Param::mutation_rate, Param::crossover_rate,
+	gen_algo_ = new Genetic_Algo(Param::n_fish, Param::mutation_rate, Param::crossover_rate,
 			fishes_.at(0)->getNWeights());
 
 	/// Get weights from GA and put it in fishes' brain
 	for (uint16_t i = 0; i < fishes_.size(); i++)
 	{
-		fishes_[i]->putWeights(gen_algo_->getPopulation()[i].genes_);
+		fishes_[i]->putWeights(gen_algo_->getPopulation()[i].getGenes());
 	}
 }
 
@@ -97,19 +97,19 @@ void World::update()
 		tick_cnt = 0;
 
 		/// Update chromosomes fitness
-		vector<SGenome> pop = gen_algo_->getPopulation();
+		vector<Chromosome> pop = gen_algo_->getPopulation();
 		for (uint16_t i = 0; i < fishes_.size(); i++)
 		{
-			pop[i].fitness_ = fishes_.at(i)->getFitness();
+			pop[i].setFitness(fishes_.at(i)->getFitness());
 		}
 
 		/// Run Genetic Algorithm
-		pop = gen_algo_->Epoch(pop);
+		pop = gen_algo_->NextGeneration(pop);
 
 		/// Update Fishes' brain with new values
 		for (uint16_t i = 0; i < fishes_.size(); i++)
 		{
-			fishes_[i]->putWeights(pop[i].genes_);
+			fishes_[i]->putWeights(pop[i].getGenes());
 
 			fishes_[i]->reset();
 		}

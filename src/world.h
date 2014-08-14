@@ -14,7 +14,7 @@
 
 #include "fish.h"
 #include "food.h"
-#include "CGenAlg.h"
+#include "genetic_algo/genetic_algo.h"
 
 /// === NAMESPACE	================================================================================
 
@@ -40,7 +40,7 @@ private:
 	Fish* fish_best_;
 	std::vector<Food*> foods_;
 
-	CGenAlg* gen_algo_;
+	Genetic_Algo* gen_algo_;
 	uint32_t tick_cnt;
 };
 

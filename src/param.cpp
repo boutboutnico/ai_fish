@@ -33,7 +33,7 @@ float Param::bias = -1;
 float Param::turn_rate_max = 0.3;
 
 uint32_t Param::n_ticks = 3000;
-float Param::mutation_rate = 0.1;
+float Param::mutation_rate = 0.01;
 float Param::crossover_rate = 0.7;
 float Param::perturbation_max = 0.3;
 uint16_t Param::n_elite = 4;

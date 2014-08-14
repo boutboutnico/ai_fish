@@ -1,6 +1,7 @@
 ///
 /// \file	neuron.cpp
-///	\brief	
+///	\brief	Based on http://www.ai-junkie.com/
+///			Thanks to Mat Buckland
 ///	\date	13 août 2014
 /// \author	Nico_user
 ///
