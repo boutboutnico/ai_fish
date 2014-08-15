@@ -28,6 +28,7 @@ class World
 public:
 	/// === PUBLIC DECLARATIONS	====================================================================
 	World(sdl::Renderer& renderer);
+	virtual ~World();
 
 	void update();
 	void display(sdl::Renderer& renderer);

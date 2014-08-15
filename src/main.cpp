@@ -115,8 +115,7 @@ int main(int argc, char** argv)
 	} catch (const SDL_Exception& err)
 	{
 		cerr << "Error SDL: " << err.what() << endl;
-	}
-	catch(...)
+	} catch (...)
 	{
 		cerr << "Unhandle exception" << endl;
 	}
